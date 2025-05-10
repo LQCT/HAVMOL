@@ -1,0 +1,1097 @@
+C  HFSCF  A1
+      SUBROUTINE HFSCF
+      IMPLICIT REAL*8 (A-H,O-Z)
+      include 'dimmm'
+      LOGICAL  LADAPT,LSKIP
+      LOGICAL REVISE
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      COMMON/SECTOR/NUM3,IBLK3,REVISE,IODA(24),ICLASS(24),
+     &              ILEN(24),MAXB,KBLKLA
+
+      COMMON/TIMEX/TSTART,TI,TX,TIM,TTGO,TIMMAX,TTOT
+
+      CALL TIMIT(3)
+      IF((TIMLIM-TIM).LE.3.0D0)GOTO 100
+
+C     EVALUATE INTEGRALS
+
+      write (*,'(/a)') ' > HFSCF is calling INTEG'
+      write (*,'(a)') ' (Calculation of electron integrals)'
+      CALL INTEG
+      call timit (4)
+
+C     SCF CALCULATION
+
+      write (*,'(/a)') ' > HFSCF is calling SCFRUN'
+      write (*,'(a)') ' (Calculation of SCF energy)'
+      CALL SCFRUN
+      call timit (4)
+
+      RETURN
+
+100   WRITE(IW,110)
+      write(*,110)
+110   FORMAT(//10X,'*** INSUFFICIENT TIME TO CONTINUE ***'//
+     &10X,'This job can be restarted ...')
+      CALL CLENUP
+      write(IW,*) '*** MICROMOL INTERRUPTED IN SCF ***'
+      write(*,*) '*** MICROMOL INTERRUPTED IN SCF ***'
+      stop
+      END
+
+      SUBROUTINE INTEG
+
+      IMPLICIT REAL*8 (A-H,O-Z)
+      include 'dimmm'
+      INTEGER*2 ERLOAD
+      LOGICAL  LADAPT,LSKIP
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+C    ERLOAD=LOADER(10,'STAND_.OVL')
+      IF(IREST.EQ.0) CALL STANDV
+      IF(IREST.LE.1.AND.(.NOT.LSKIP)) CALL JANDK
+      LSKIP=.FALSE.
+      RETURN
+      END
+
+      SUBROUTINE SCFRUN
+      IMPLICIT REAL*8 (A-H,O-Z)
+      include 'dimmm'
+      LOGICAL  LADAPT,LSKIP
+      LOGICAL REVISE
+      LOGICAL FIXED,LEX,LDAM12,LDAM13,LDAM23,LDIIS
+      COMMON/SCFBLK/EN,ETOT,EHF,SH1(2),SH2(2),GAP1(2),GAP2(2),
+     1              D12,D13,D23,CANA,CANB,CANC,FIXED,LEX,
+     2              LDAM12,LDAM13,LDAM23,LDIIS,
+     3              NCYC,ISCHM,LOCK,MAXIT,NCONV,LOKCYC
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      COMMON/SECTOR/NUM3,IBLK3,REVISE,IODA(24),ICLASS(24),
+     &              ILEN(24),MAXB,KBLKLA
+      CHARACTER*8 ANAM,ATNAM,BFLAB,PARNAM
+      INTEGER P1, P2, P3
+      COMMON /INFOA/ NAT, ICH, MUL, NUM, NX, NE, NA, NB,
+     1               ZAN(NATM1),C(3,NATM1),
+     2               NVAR,NPAR,NVAL,NUQ,CFR,CFA,KONTYP(NATM1),
+     3               P1(NATM1),P2(NATM1),P3(NATM1),
+     4               KR(NATM1),KA(NATM1),KB(NATM1),
+     5               PARVAL(NATM13),ZIN(NATM1),X(NATM13)
+      COMMON/INFOB/ANAM(NATM1),BFLAB(NBF1),PARNAM(NATM13),ATNAM(NATM1)
+      COMMON/TEMP2/IOSF(50)
+
+C     ERLOAD=LOADER(8,'SCF_.OVL')
+
+      IBLOK=0
+
+      IF(IREST.LE.2) CALL MOGUES
+
+      NWORD=NUM*NUM
+      IOSF(1)=IBLKS
+      IOSF(2)=IOSF(1)+((NWORD-1)/511+1)
+      DO 10 I=1,6
+10      IOSF(I+2)=IOSF(I+1)+(NX-1)/511+1
+
+      IF(IREST.LE.3) CALL SCF
+
+      CALL SECGET(ISEX(13),13,IBLOK)
+      CALL WRT3(EN,LDA(ISEX(13)),IBLOK,IFILD)
+      RETURN
+      END
+
+C  MOGUES  A1
+
+      SUBROUTINE MOGUES
+      IMPLICIT REAL*8(A-H,O-Z)
+      include 'dimmm'
+      INTEGER P1,P2,P3
+      character*6 suber /'MOGUES'/
+      CHARACTER*8 PARNAM,ATNAM,ANAM,BFLAB
+      COMMON/INFOA/NAT,ICH,MUL,NUM,NX,NE,NA,NB,ZAN(NATM1),C(3,NATM1),
+     &             NVAR,NPAR,NVAL,NUQ,
+     &             CFR,CFA,KONTYP(NATM1),P1(NATM1),P2(NATM1),P3(NATM1)
+     &             ,KR(NATM1),KA(NATM1),KB(NATM1),PARVAL(NATM13)
+     &             ,ZIN(NATM1),X(NATM13)
+      COMMON/INFOB/ANAM(NATM1),BFLAB(NBF1),PARNAM(NATM13),ATNAM(NATM1)
+
+      LOGICAL  LADAPT,LSKIP
+      CHARACTER*8 TITLE,SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNSB/TITLE(10),SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+
+      COMMON/BIG/Q(MDM1),QXTRA
+      COMMON/BIGG/QQ(MDM1),QQXTRA,QQQ(NBF1M+NBF1)
+
+      COMMON/MAPPER/IA(NBF1+1)
+      CHARACTER*8 TYP1,TYP2,TYP4,TYP6
+      DATA TYP1/'RESTART'/
+      DATA TYP2,TYP4,TYP6/'HCORE','HUCKEL','RESTORE'/
+
+      ISEC4=0
+      ISC24=0
+      NDIM=NUM
+      I1=2*NX
+      J1=1+NUM*NUM
+      IF(I1.GT.MAXDIM) CALL HONDER(24,suber)
+
+C     GUESS=RESTART
+
+      IF(GUESS.eq.TYP1) then
+        RETURN
+      endif
+
+      CALL QMAT(QQQ(1),Q(1),Q(J1),qq(1),NDIM)
+
+C     GUESS=HCORE .OR. HUCKEL (START FROM 1-ELECTRON HAMILTONIAN)
+
+      IF(GUESS.eq.TYP2 .or. GUESS.eq.TYP4) then
+        CALL HCORE(QQQ(1),Q(1),Q(J1),QQ(1),QQ(J1),Q(1),NDIM)
+        GO TO 300
+      endif
+
+C     ----- READ SAVED MOS ----
+
+      IF(GUESS.eq.TYP6) then
+        CALL RESTMO(QQQ(1),Q(1),Q(J1),QQ(J1),NDIM)
+        GOTO 300
+      endif
+
+C     ERROR - UNRECOGNISED GUESS
+
+      CALL HONDER(12,suber)
+
+300   CALL TIMIT(0)
+      CALL REVIND
+      ITYPE=4
+      CALL SECGET(ISEX(4),ITYPE,ISEC4)
+      CALL WRT3(VIBSIZ,LDA(ISEX(4)),ISEC4,IFILD)
+      CALL SECGET(ISEX(24),24,ISC24)
+      CALL WRT3C(TITLE,LDA(ISEX(24)),ISC24,IFILD)
+      CALL SECSUM
+      RETURN
+      END
+
+      SUBROUTINE WRT3S(Q,NWORD,NUM3)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION Q(*)
+
+      L=511
+      J=1
+      K=NWORD
+10    K=K-511
+      IF(K)20,30,30
+20    L=K+511
+30    CALL PUT(Q(J),L,NUM3)
+      J=J+511
+      IF(K)40,40,10
+40    RETURN
+      END
+
+C  FOCKTR  M2
+
+      SUBROUTINE FOCKTR(H,F,C,T,IA,NC,NUM,NDIM)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION H(*),F(*),C(*),T(*),IA(*)
+
+      NJ=0
+      IJ=0
+      DO 60 J=1,NC
+        DO 30 K=1,NUM
+          CKJ=C(K+NJ)
+          KK=IA(K)
+          DUM=F(KK+K)*CKJ
+          KLESS1=K-1
+          IF(KLESS1) 30,30,10
+10        DO 20 L=1,KLESS1
+            FKL=F(KK+L)
+            DUM=DUM+FKL*C(NJ+L)
+20          T(L)=T(L)+FKL*CKJ
+30        T(K)=DUM
+        NI=0
+        DO 50 I=1,J
+          IJ=IJ+1
+          H(IJ)=VECSUM(T(1),C(NI+1),NUM)
+50        NI=NI+NDIM
+60      NJ=NJ+NDIM
+      RETURN
+      END
+
+      SUBROUTINE BACKTR(V,C,T,NC,NUM,NDIM)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION V(*),C(*),T(*)
+      PARAMETER (ZERO=0.0D0)
+
+      NJ=0
+      DO 30 J=1,NC
+        DO 31 I=1,NUM
+31        T(I)=ZERO
+        NK=0
+        DO 20 K=1,NC
+          FAC=V(K+NJ)
+          IF(FAC.EQ.ZERO)GOTO 20
+          DO 10 I=1,NUM
+10          T(I)=T(I)+FAC*C(I+NK)
+20        NK=NK+NDIM
+        DO 21 I=1,NUM
+21        V(I+NJ)=T(I)
+30      NJ=NJ+NDIM
+
+      RETURN
+      END
+
+      SUBROUTINE ORTHO(V,S,T,NUMSCF,NCOORB,NDIM,IA)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION V(NDIM,NCOORB),S(*),T(*),IA(*)
+      PARAMETER (ZERO=0.0D0)
+
+      DO 110 I=1,NCOORB
+        IF(I.EQ.1) GOTO 70
+        DO 30 K=1,NUMSCF
+          CKI=V(K,I)
+          KK=IA(K)
+          TOP=S(KK+K)*CKI
+          KLESS1=K-1
+          IF(KLESS1.EQ.0)GOTO 30
+          DO 10 L=1,KLESS1
+            SKL=S(KK+L)
+            TOP=TOP+SKL*V(L,I)
+10          T(L)=T(L)+SKL*CKI
+30      T(K)=TOP
+        IM1=I-1
+        DO 60 J=1,IM1
+          TOP=VECSUM(T(1),V(1,J),NUMSCF)
+          TOP=-TOP
+          CALL  SAXPY(NUMSCF,TOP,V(1,J),V(1,I))
+60        CONTINUE
+70      TOP=ZERO
+        DO 90 K=1,NUMSCF
+          KK=IA(K)
+          CT=V(K,I)
+          TOP=TOP+CT*CT
+          KLESS1=K-1
+          IF(KLESS1.EQ.0)GOTO 90
+          CT=CT+CT
+          DO 80 L=1,KLESS1
+80          TOP=TOP+CT*V(L,I)*S(KK+L)
+90        CONTINUE
+        TOP=1.0D0/DSQRT(TOP)
+        DO 100 K=1,NUMSCF
+100       V(K,I)=V(K,I)*TOP
+110     CONTINUE
+
+      RETURN
+      END
+
+C  DMTX  A1
+
+      SUBROUTINE DMTX(D,V,X,NOC,NUM,NDIM)
+      IMPLICIT REAL*8(A-H,O-Z)
+
+C <V> ARE THE MO'S COEFFICIENTS
+C <D> ARE DENSITIES IN BASIS FUNCTIONS
+C <X> ARE MO'S OCCUPANCIES
+C NOC IS THE AMOUNT OF OCCUPIED MO'S
+
+      DIMENSION D(*),V(NDIM,NUM),X(*)
+
+      LOGICAL  LADAPT,LSKIP
+      CHARACTER*8 TITLE,SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNSB/TITLE(10),SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      LOGICAL REVISE
+      COMMON/SECTOR/NUM3,IBLK3,REVISE,IODA(24),ICLASS(24),
+     &              ILEN(24),MAXB,KBLKLA
+      PARAMETER (ZERO=0.0D0)
+
+      IJ=NUM*(NUM+1)/2
+      DO 1 I=1,IJ
+1       D(I)=ZERO
+      IF (NOC.EQ.0) RETURN
+      DO 30 I=1,NUM
+        II=I*(I-1)/2
+        DO 20 K=1,NOC
+          DUM=X(K)*V(I,K)
+          IF(DUM.EQ.ZERO)GOTO 20
+          DO 10 J=1,I
+10          D(J+II)=D(J+II)+V(J,K)*DUM
+20        CONTINUE
+30      CONTINUE
+
+      RETURN
+      END
+
+      SUBROUTINE SAVEMO(D,V,E,NDIM,IPOS)
+      IMPLICIT REAL*8 (A-H,O-Z)
+      include 'dimmm'
+      INTEGER P1,P2,P3
+      LOGICAL REVISE
+      LOGICAL  LADAPT,LSKIP
+      DIMENSION D(*),V(NDIM,*),E(*)
+
+      CHARACTER*8 TITLE,SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNSB/TITLE(10),SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      COMMON/SECTOR/NUM3,IBLK3,REVISE,IODA(24),ICLASS(24),
+     &              ILEN(24),MAXB,KBLKLA
+
+      CHARACTER*8 BFLAB,PARNAM,ATNAM,ANAM
+      COMMON/INFOA/NAT,ICH,MUL,NUM,NX,NE,NA,NB,ZAN(NATM1),C(3,NATM1),
+     &             NVAR,NPAR,NVAL,NUQ,
+     &             CFR,CFA,KONTYP(NATM1),P1(NATM1),P2(NATM1),P3(NATM1)
+     &             ,KR(NATM1),KA(NATM1),KB(NATM1),PARVAL(NATM13)
+     &             ,ZIN(NATM1),X(NATM13)
+      COMMON/INFOB/ANAM(NATM1),BFLAB(NBF1),PARNAM(NATM13),ATNAM(NATM1)
+
+C     STORE DENSITY MATRIX
+
+      IBLKDC=0
+      LEN=(NX-1)/511+1
+      CALL SECPUT(ISEX(IPOS),IPOS,LEN,IBLKDC)
+      LDA(ISEX(IPOS))=NX
+      CALL WRT3(D,NX,IBLKDC,IFILD)
+
+C     STORE VECTORS
+
+      LENW=NUM*NCOORB
+      LDA(ISEX(IPOS+1))=LENW
+      LEN=(LENW-1)/511+1
+      CALL SECPUT(ISEX(IPOS+1),IPOS+1,LEN,IBLKDC)
+      CALL WRT3(V,LENW,IBLKDC,IFILD)
+
+C     STORE EIGENVALUES
+
+      LEN=(NUM-1)/511+1
+      LDA(ISEX(IPOS+2))=NUM
+      CALL SECPUT(ISEX(IPOS+2),IPOS+2,LEN,IBLKDC)
+      CALL WRT3(E,NUM,IBLKDC,IFILD)
+
+      RETURN
+      END
+C  SCF
+
+      SUBROUTINE SCF
+      IMPLICIT REAL*8(A-H,O-Z)
+
+C     ----- CLOSED SHELL HF-SCF CALCULATION -----
+
+      CHARACTER*8 OSCF,CLOSED
+      CHARACTER*8 TITLE,SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNSB/TITLE(10),SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      DATA OSCF,CLOSED/'OSCF','CLOSED'/
+
+      IF(SCFTYP.EQ.CLOSED)  THEN
+        CALL SCFCL
+      ELSEIF(SCFTYP.EQ.OSCF) THEN
+        CALL SCFHS
+      ELSE
+        call honder(17,'SCF')
+      ENDIF
+
+1001  FORMAT(1H ,' UNKNOWN SCFTYP')
+      RETURN
+      END
+
+      FUNCTION ENUC(NAT,ZAN,C)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION ZAN(*),C(3,*)
+      PARAMETER (ZERO=0.0D0)
+
+      ENUC=ZERO
+      IF(NAT.EQ.1) GOTO 20
+
+C     THIS IS THE STANDARD NUCLEAR REPULSION TERM
+
+      DO 10 I=2,NAT
+        NI=I-1
+        DO 10 J=1,NI
+          AX=C(1,I)-C(1,J)
+          AY=C(2,I)-C(2,J)
+          AZ=C(3,I)-C(3,J)
+          RR=AX*AX+AY*AY+AZ*AZ
+10        ENUC=ENUC+ZAN(I)*ZAN(J)/DSQRT(RR)
+
+20    CONTINUE
+      RETURN
+      END
+
+C  TRACEP  M2
+
+      FUNCTION TRACEP(A,B,N)
+
+C     ----- TRACE OF PRODUCT OF 2 SYMMETRIC MATRICES
+C           -A- AND -B- STORED LINEARLY -----
+
+      IMPLICIT REAL*8 (A-H,O-Z)
+      DIMENSION A(*),B(*)
+
+      TRACEP=0.0D0
+      K=0
+      DO 20 I=1,N
+        DO 20 J=1,I
+          K=K+1
+          AB=A(K)*B(K)
+          IF(I-J)20,15,10
+10        TRACEP=TRACEP+AB
+15        TRACEP=TRACEP+AB
+20        CONTINUE
+
+      RETURN
+      END
+      SUBROUTINE TRMAT
+      IMPLICIT REAL*8 (A-H,O-Z)
+      include 'dimmm'
+      COMMON/BIGK/PTR(3,72),DTR(6,144),SPJUNK(936)
+      LOGICAL  LADAPT,LSKIP
+      CHARACTER*8 TITLE,SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNSB/TITLE(10),SCFTYP,RUNTYP,GUESS,CONF
+      COMMON/OPTNS/TIMLIM,VIBSIZ,NOPT,NVIB,IREST2,IREST3,
+     &            LADAPT,LSKIP,NPRINT,ITOL,ICUT,NORMF,NORMP,
+     &            IREST,NREC,INTLOC,IST,JST,KST,LST,IR,IW,
+     &            IBLKD,IFILD,IBLKS,IFILS,IBLKM,IFILM,MBLKM,
+     &            NOTAPE(3),IBLK(3),LBLK(3),ILOW,NCOORB,NSA,
+     &            MINVEC,DIISE,DIISD,MINULL,
+     &            ICONV,NRUNS,NMUL(2),IPOSM,LDA(24),ISEX(24),
+     &            TTOT1
+      LOGICAL REVISE
+      COMMON/SECTOR/NUM3,IBLK3,REVISE,IODA(24),ICLASS(24),
+     &              ILEN(24),MAXB,KBLKLA
+      CHARACTER*8 GROUP
+      COMMON/SYMTRY/T(216),INVT(24),ISO(NSH1+1,24),NT,NT2,
+     1XOLD,YOLD,ZOLD,XNEW,YNEW,ZNEW,XP,YP,ZP,
+     2U1,U2,U3,V1,V2,V3,W1,W2,W3,X0,Y0,Z0,INDEX,NAXIS
+      COMMON/SYMTRB/GROUP
+      PARAMETER (ONE=1.0D+00)
+
+      SQRT3=DSQRT(3.0D0)
+10    FORMAT(//)
+20    FORMAT(/,' TRANSFORMATION OF THE BASIS FUNCTIONS',/)
+30    FORMAT(8X,10(3X,A4,3X))
+40    FORMAT(2X,A4,2X,10F10.6)
+50    FORMAT(///)
+60    FORMAT(/,21X,'TRANSFORMATION NUMBER',I4,/)
+70    FORMAT(/)
+
+C     ----- CALCULATE TRANSFORMS OF P AND D FUNCTIONS
+C           FOR ALL SYMETRY OPERATIONS.
+
+      X=X0+ONE
+      Y=Y0
+      Z=Z0
+      XS=U1*(X-X0)+U2*(Y-Y0)+U3*(Z-Z0)
+      YS=V1*(X-X0)+V2*(Y-Y0)+V3*(Z-Z0)
+      ZS=W1*(X-X0)+W2*(Y-Y0)+W3*(Z-Z0)
+      XOLD=XS
+      YOLD=YS
+      ZOLD=ZS
+      DO 80 IT=1,NT
+        NN=9*(IT-1)
+        XNEW=XOLD*T(NN+1)+YOLD*T(NN+2)+ZOLD*T(NN+3)
+        YNEW=XOLD*T(NN+4)+YOLD*T(NN+5)+ZOLD*T(NN+6)
+        ZNEW=XOLD*T(NN+7)+YOLD*T(NN+8)+ZOLD*T(NN+9)
+        XP=X0+U1*XNEW+V1*YNEW+W1*ZNEW
+        YP=Y0+U2*XNEW+V2*YNEW+W2*ZNEW
+        ZP=Z0+U3*XNEW+V3*YNEW+W3*ZNEW
+        N=3*(IT-1)
+        NP1 = N+1
+        PTR(1,NP1)=XP-X0
+        PTR(2,NP1)=YP-Y0
+        PTR(3,NP1)=ZP-Z0
+80      CONTINUE
+      X=X0
+      Y=Y0+ONE
+      Z=Z0
+      XS=U1*(X-X0)+U2*(Y-Y0)+U3*(Z-Z0)
+      YS=V1*(X-X0)+V2*(Y-Y0)+V3*(Z-Z0)
+      ZS=W1*(X-X0)+W2*(Y-Y0)+W3*(Z-Z0)
+      XOLD=XS
+      YOLD=YS
+      ZOLD=ZS
+      DO 90 IT=1,NT
+        NN=9*(IT-1)
+        XNEW=XOLD*T(NN+1)+YOLD*T(NN+2)+ZOLD*T(NN+3)
+        YNEW=XOLD*T(NN+4)+YOLD*T(NN+5)+ZOLD*T(NN+6)
+        ZNEW=XOLD*T(NN+7)+YOLD*T(NN+8)+ZOLD*T(NN+9)
+        XP=X0+U1*XNEW+V1*YNEW+W1*ZNEW
+        YP=Y0+U2*XNEW+V2*YNEW+W2*ZNEW
+        ZP=Z0+U3*XNEW+V3*YNEW+W3*ZNEW
+        N=3*(IT-1)
+        NP2 = N+2
+        PTR(1,NP2)=XP-X0
+        PTR(2,NP2)=YP-Y0
+        PTR(3,NP2)=ZP-Z0
+90      CONTINUE
+      X=X0
+      Y=Y0
+      Z=Z0+ONE
+      XS=U1*(X-X0)+U2*(Y-Y0)+U3*(Z-Z0)
+      YS=V1*(X-X0)+V2*(Y-Y0)+V3*(Z-Z0)
+      ZS=W1*(X-X0)+W2*(Y-Y0)+W3*(Z-Z0)
+      XOLD=XS
+      YOLD=YS
+      ZOLD=ZS
+      DO 100 IT=1,NT
+        NN=9*(IT-1)
+        XNEW=XOLD*T(NN+1)+YOLD*T(NN+2)+ZOLD*T(NN+3)
+        YNEW=XOLD*T(NN+4)+YOLD*T(NN+5)+ZOLD*T(NN+6)
+        ZNEW=XOLD*T(NN+7)+YOLD*T(NN+8)+ZOLD*T(NN+9)
+        XP=X0+U1*XNEW+V1*YNEW+W1*ZNEW
+        YP=Y0+U2*XNEW+V2*YNEW+W2*ZNEW
+        ZP=Z0+U3*XNEW+V3*YNEW+W3*ZNEW
+        N=3*(IT-1)
+        NP3 = N+3
+        PTR(1,NP3)=XP-X0
+        PTR(2,NP3)=YP-Y0
+        PTR(3,NP3)=ZP-Z0
+100     CONTINUE
+      DO 190 IT=1,NT
+        NP=3*(IT-1)
+        ND=6*(IT-1)
+        DO 180 I=1,6
+          GO TO (110,120,130,140,150,160),I
+110         J=1
+            K=1
+          GO TO 170
+120         J=2
+            K=2
+          GO TO 170
+130         J=3
+            K=3
+          GO TO 170
+140         J=1
+            K=2
+          GO TO 170
+150         J=1
+            K=3
+          GO TO 170
+160         J=2
+            K=3
+170       NDPI = ND+I
+          NPPJ = NP+J
+          NPPK = NP+K
+          DTR(1,NDPI)=PTR(1,NPPJ)*PTR(1,NPPK)
+          DTR(2,NDPI)=PTR(2,NPPJ)*PTR(2,NPPK)
+          DTR(3,NDPI)=PTR(3,NPPJ)*PTR(3,NPPK)
+          DTR(4,NDPI)=PTR(1,NPPJ)*PTR(2,NPPK)
+     &               +PTR(2,NPPJ)*PTR(1,NPPK)
+          DTR(5,NDPI)=PTR(1,NPPJ)*PTR(3,NPPK)
+     &               +PTR(3,NPPJ)*PTR(1,NPPK)
+          DTR(6,NDPI)=PTR(2,NPPJ)*PTR(3,NPPK)
+     &               +PTR(3,NPPJ)*PTR(2,NPPK)
+180       CONTINUE
+190     CONTINUE
+
+      IF((NORMF.EQ.1).AND.(NORMP.EQ.1))GO TO 230
+      DO 220 IT=1,NT
+        ND=6*(IT-1)
+        DO 210 I=1,6
+          NDPI = ND+I
+          IF(I.LE.3) THEN
+            DTR(4,NDPI)=DTR(4,NDPI)/SQRT3
+            DTR(5,NDPI)=DTR(5,NDPI)/SQRT3
+            DTR(6,NDPI)=DTR(6,NDPI)/SQRT3
+          ELSE
+            DTR(1,NDPI)=DTR(1,NDPI)*SQRT3
+            DTR(2,NDPI)=DTR(2,NDPI)*SQRT3
+            DTR(3,NDPI)=DTR(3,NDPI)*SQRT3
+          ENDIF
+210       CONTINUE
+220     CONTINUE
+230   CONTINUE
+
+      RETURN
+      END
+C  SYMH  A1
+
+      SUBROUTINE SYMH(F,H,IA)
+      IMPLICIT REAL*8(A-H,O-Z)
+      include 'dimmm'
+      LOGICAL IANDJ
+
+C     ----- SYMMETRIZE THE SKELETON FOCK MATRIX
+
+      DIMENSION F(*),H(*),IA(*)
+
+      INTEGER P1,P2,P3
+      COMMON/NSHEL/EX(NPRM1),CS(NPRM1),CP(NPRM1),CD(NPRM1),
+     1             KSTART(NSH1),KATOM(NSH1),
+     2             KTYPE(NSH1),KNG(NSH1),KLOC(NSH1),
+     3             KMIN(NSH1),KMAX(NSH1),NSHELL,NSEL2
+
+      CHARACTER*8 GROUP
+      COMMON/SYMTRY/TT(216),INVT(24),ISO(NSH1+1,24),NT
+     &,NT2,XX(21),INDEX,NAXIS
+      COMMON/SYMTRB/GROUP
+      COMMON/BIGK/PTR(3,72),DTR(6,144)
+     1           ,T(10,10),MINI,MAXI,LIT,MINJ,MAXJ,LJT,NTR,ISPJNK
+     2           ,SPJUNK(832)
+      CHARACTER*8 PARNAM,ATNAM,ANAM,BFLAB
+      COMMON/INFOA/NAT,ICH,MUL,NUM,NX,NE,NA,NB,ZAN(NATM1),C(3,NATM1),
+     &             NVAR,NPAR,NVAL,NUQ,
+     &             CFR,CFA,KONTYP(NATM1),P1(NATM1),P2(NATM1),P3(NATM1)
+     &             ,KR(NATM1),KA(NATM1),KB(NATM1),PARVAL(NATM13)
+     &             ,ZIN(NATM1),X(NATM13)
+      COMMON/INFOB/ANAM(NATM1),BFLAB(NBF1),PARNAM(NATM13),ATNAM(NATM1)
+      DIMENSION INDIN(24),MI(24)
+      PARAMETER (ZERO=0.0D0,ONE=1.0D0)
+
+      IF(NT.EQ.1) RETURN
+      DO 10 I=1,NX
+10      H(I)=ZERO
+
+C     ----- FIND A BLOCK (I,J)
+
+      DO 210 II=1,NSHELL
+        DO 20 ITR=1,NT
+          ISH=ISO(II,ITR)
+          IF(ISH.GT.II) GO TO 210
+20        MI(ITR)=ISH
+        LIT=KTYPE(II)
+        MINI=KMIN(II)
+        MAXI=KMAX(II)
+        LOCI=KLOC(II)-MINI
+        DO 200 JJ=1,II
+          DO 30 ITR=1,NT
+30          INDIN(ITR)=ISO(JJ,ITR)
+          DO 50 ITR=1,NT
+            JSH=INDIN(ITR)
+            IF(JSH.GT.II) GO TO 200
+            ISH=MI(ITR)
+            IF(ISH.GE.JSH) GO TO 40
+            N=ISH
+            ISH=JSH
+            JSH=N
+40          IF(ISH.EQ.II.AND.JSH.GT.JJ) GO TO 200
+50          CONTINUE
+          LJT=KTYPE(JJ)
+          MINJ=KMIN(JJ)
+          MAXJ=KMAX(JJ)
+          LOCJ=KLOC(JJ)-MINJ
+          IANDJ=II.EQ.JJ
+          JMAX=MAXJ
+
+C     ----- FIND THE EQUIVALENT BLOCKS
+C     ----- TRANSFER EQUIVALENT BLOCK INTO T-MATRIX
+C     ----- COMPUTE (R) T (R)
+C     ----- PUT THE RESULT BACK INTO THE (I,J) BLOCK OF THE H-MATRIX
+
+          DO 100 ITR=1,NT
+            NTR=ITR 
+            KK=MI(ITR) 
+            LL=INDIN(ITR)
+            LOCK=KLOC(KK)-KMIN(KK)
+            LOCL=KLOC(LL)-KMIN(LL)
+            DO 80 K=MINI,MAXI
+              LCK=LOCK+K
+              IF(IANDJ) JMAX=K
+              DO 80 L=MINJ,JMAX
+                IF(LL.GT.KK) GO TO 60
+                KL=IA(LCK)+LOCL+L
+                GO TO 70
+60              KL=IA(LOCL+L)+LCK
+70              T(K,L)=F(KL)
+                IF(IANDJ) T(L,K)=F(KL)
+80              CONTINUE
+            IF(LIT.GT.1.OR.LJT.GT.1) CALL RHR
+            DO 90 I=MINI,MAXI
+              LCI=IA(LOCI+I)+LOCJ
+              IF(IANDJ) JMAX=I
+              DO 90 J=MINJ,JMAX
+                IJ=LCI+J
+90              H(IJ)=H(IJ)+T(I,J)
+100         CONTINUE
+
+C     ----- FOR EACH BLOCK (K,L) EQUIVALENT TO (I,J)
+C     ----- FIND THE TRANSFORMATION THAT MAPS (K,L) INTO (I,J)
+C     ----- COMPUTE (R) T (R)
+C     ----- PUT THE RESULT BACK INTO THE (K,L) BLOCK OF THE H-MATRIX
+
+          DO 190 ITR=2,NT
+            KK=MI(ITR)
+            LL=INDIN(ITR)
+            IF(KK.GE.LL) GO TO 110
+            K=LL
+            L=KK
+            GO TO 120
+110         K=KK
+            L=LL
+120         IF(K.EQ.II.AND.L.EQ.JJ) GO TO 190
+            NTR=ITR+1
+            IF(NTR.GT.NT) GO TO 150
+            DO 140 IT=NTR,NT
+              I=MI(IT)
+              J=INDIN(IT)
+              IF(I.GE.J) GO TO 130
+              IJ=I
+              I=J
+              J=IJ
+130           IF(I.EQ.K.AND.J.EQ.L) GO TO 190
+140           CONTINUE
+150         CONTINUE
+            NTR=INVT(ITR)
+            DO 160 I=MINI,MAXI
+              LCI=IA(LOCI+I)+LOCJ
+              IF(IANDJ) JMAX=I
+              DO 160 J=MINJ,JMAX
+                T(I,J)=H(LCI+J)
+                IF(IANDJ) T(J,I)=H(LCI+J)
+160             CONTINUE
+            IF(LIT.GT.1.OR.LJT.GT.1) CALL RHR
+            LOCK=KLOC(KK)-KMIN(KK)
+            LOCL=KLOC(LL)-KMIN(LL)
+            DO 180 K=MINI,MAXI
+              LCK=LOCK+K
+              IF(IANDJ) JMAX=K
+              DO 180 L=MINJ,JMAX
+                IF(LL.GT.KK) GO TO 170
+                KL=IA(LCK)+LOCL+L
+                GO TO 180
+170             KL=IA(LOCL+L)+LCK
+180             H(KL)=T(K,L)
+190         CONTINUE
+200       CONTINUE
+210     CONTINUE
+      DUM=ONE/DBLE(FLOAT(NT))
+      DO 220 I=1,NX
+220     F(I)=H(I)*DUM
+      RETURN
+      END
+
+      SUBROUTINE EXTRAP(A1,A2,A3,A4,ICOUNT,IW,IFILS,IOSF,INDEX
+     $,DIISE)
+      IMPLICIT REAL*8(A-H,O-Z)
+      include 'dimmm'
+      INTEGER P1,P2,P3
+      CHARACTER*8 BFLAB,PARNAM,ATNAM,ANAM
+      LOGICAL DIISE
+      COMMON/INFOA/NAT,ICH,MUL,NUM,NX,NE,NA,NB,ZAN(NATM1),C(3,NATM1),
+     &             NVAR,NPAR,NVAL,NUQ,
+     &             CFR,CFA,KONTYP(NATM1),P1(NATM1),P2(NATM1),P3(NATM1)
+     &             ,KR(NATM1),KA(NATM1),KB(NATM1),PARVAL(NATM13)
+     &             ,ZIN(NATM1),XTRA(NATM13)
+      COMMON/INFOB/ANAM(NATM1),BFLAB(NBF1),PARNAM(NATM13),ATNAM(NATM1)
+      DIMENSION IOSF(*)
+      DIMENSION A1(*),A2(*),A3(*),A4(*)
+      PARAMETER (ZERO=0.D0,ONE=1.D0,TWO=2.D0,FOUR=4.D0,
+     &           TOL=0.99D0,TOL1=1.9D0,TOL2=0.995D0)
+      ICOUNT=ICOUNT+1
+
+C     ----- CURRENT FOCK MATRIX IS IN -A4-
+C           GET A3, A2, A1 FROM DISK
+
+      IBLK1=IOSF(2+INDEX)
+      CALL READQ(A1,NX,IBLK1,IFILS)
+      CALL READS(A2,NX,IFILS)
+      CALL READS(A3,NX,IFILS)
+      CALL WRT3(A2,NX,IBLK1,IFILS)
+      CALL WRT3S(A3,NX,IFILS)
+      CALL WRT3S(A4,NX,IFILS)
+      IF(ICOUNT.LE.5.OR.DIISE)RETURN
+      DO 10 I=1,NX
+        A1(I)=A2(I)-A1(I)
+        A2(I)=A3(I)-A2(I)
+10      A3(I)=A4(I)-A3(I)
+
+C     ----- FIND DISPLACEMENT DP1,DP2,DP3 -----
+
+      SP11=TRACEP(A3,A3,NUM)
+      SP12=TRACEP(A2,A3,NUM)
+      SP13=TRACEP(A1,A3,NUM)
+      SP22=TRACEP(A2,A2,NUM)
+      SP23=TRACEP(A1,A2,NUM)
+      SP33=TRACEP(A1,A1,NUM)
+      DP1=DSQRT(SP11)
+      DP2=DSQRT(SP22)
+      DP3=DSQRT(SP33)
+
+C     ----- FIND COSINE OF ANGLE BETWEEN SUCCESSIVE DISPLACEMENTS -----
+
+      COSPHI=SP12/(DP1*DP2)
+
+C     ----- FIND COSINE OF ANGLE BETWEEN -DP(3)- AND
+C           PLANE OF =DP(1)- AND -DP(2)-.
+
+      Z=SP11*SP22-SP12*SP12
+      X=(SP13*SP22-SP12*SP23)/Z
+      Y=(SP23*SP11-SP12*SP13)/Z
+      COSPSI=DSQRT(X*X*SP11+Y*Y*SP22+TWO*X*Y*SP12)/DP3
+
+C     ----- DO NOT EXTRAPOLATE UNLESS -4- CONSECUTIVE POINTS ARE
+C           NEARLY COPLANAR.
+
+      IF(COSPSI.LE.TOL) RETURN
+
+C     ----- EXPRESS -DP(1)- AS X*DP(3)(PROJECTED)+Y*DP(2) -----
+
+      Y=-Y/X
+      X=ONE/X
+
+C     ----- TEST IF 2*2 MATRIX HAS REAL EIGENVALUES
+C           BETWEEN -0.95 AND +0.95
+
+      XY=Y*Y+FOUR*X
+      IF(XY.LT.ZERO) RETURN
+      XY=DABS(Y)+DSQRT(XY)
+      IF(XY.LE.TOL1) GO TO 40
+
+C     ----- IF -4- POINT EXTRAPOLATION IS NOT POSSIBLE,
+C           TRY -3- POINT
+
+      IF(DABS(COSPHI).LE.TOL2) RETURN
+      X=DP1/(DP2*COSPHI-DP1)
+      DO 20 I=1,NX
+20      A4(I)=A4(I)+X*A3(I)
+      write(10,30)
+      WRITE(IW,30)
+30    FORMAT(' ..... 3-POINT EXTRAPOLATION ..... ')
+      GOTO 70
+40    XXX=X/(ONE-X-Y)
+      YYY=(X+Y)/(ONE-X-Y)
+      DO 50 I=1,NX
+50      A4(I)=A4(I)+XXX*A2(I)+YYY*A3(I)
+      write(10,60)
+      WRITE(IW,60)
+60    FORMAT(' ..... 4-POINT EXTRAPOLATION ..... ')
+70    ICOUNT=0
+
+      RETURN
+      END
+      SUBROUTINE PNLTY(PENAL,DAMP,EHF,EHF0,EHFM1,EHFM2,LSWOP,
+     &                 DELDIF,ICA)
+      IMPLICIT REAL*8(A-H,O-Z)
+      LOGICAL LSWOP
+      PARAMETER (ZERO=0.0D0,TWO=2.0D0,PT5=0.5D0,PT95=0.95D0,PT1=0.1D0,
+     &           SMALL=0.0001D0,ONE=1.D0)
+
+      D1=EHF-EHF0-SMALL
+      D2=EHF0-EHFM1-SMALL
+      D3=EHFM1-EHFM2-SMALL
+      DAMP=ONE
+
+C     1.0D-4 IS SUBTRACTED FROM THE ENERGY DIFFERENCES TO
+C     ENSURE THAT WHEN CHANGES ARE SMALL NOTHING DRASTIC IS
+C     DONE.
+
+      IF(D1.LE.ZERO.AND.D2.LE.ZERO)GOTO 10
+      IF(D1.GT.ZERO.AND.D2.GT.ZERO)GOTO 20
+      IF(D1.LE.ZERO.AND.D2.GT.ZERO.AND.D3.GT.ZERO)GOTO 30
+      IF(D1.GT.ZERO.AND.D2.LE.ZERO.AND.D3.LE.ZERO)GOTO 40
+      IF(D1.LE.ZERO.AND.D2.GT.ZERO.AND.D3.LE.ZERO)GOTO 50
+      IF(D1.GT.ZERO.AND.D2.LE.ZERO.AND.D3.GT.ZERO)GOTO 60
+      RETURN
+
+C     CONVERGING...
+
+10    PENAL=PENAL*PT5
+      RETURN
+
+C     DIVERGING...
+
+20    PENAL=PENAL+PENAL+D1
+      IF(DELDIF.LT.ZERO)PENAL=PENAL+PT1
+      IF(PENAL.GT.TWO)PENAL=TWO
+      LSWOP=.FALSE.
+      ICA=1
+      RETURN
+
+C     DIVERGENCE CHECKED
+
+30    PENAL=PENAL*PT5
+      RETURN
+
+C     SLIGHT SETBACK,KEEP TRYING
+
+40    IF((D1+D2+D3).LT.ZERO)RETURN
+      PENAL=PENAL+PT5
+      RETURN
+
+C     OSCILLATING,LAST CYCLE DOWNWARDS
+
+50    PENAL=PENAL+PENAL+PT5
+      IF(PENAL.GT.TWO)PENAL=TWO
+      DAMP=PT95
+      LSWOP=.FALSE.
+      RETURN
+
+C     OSCILLATING,LAST CYCLE UPWARDS
+
+60    PENAL=PENAL*PT5
+      LSWOP=.FALSE.
+      RETURN
+      END
+      SUBROUTINE LEVEL(SHIF,FOCK,SH1,SH2,GAP1,GAP2,NCYC,ITER,
+     &NA,NCOORB,FIXED)
+      IMPLICIT REAL*8(A-H,O-Z)
+      LOGICAL FIXED
+      DIMENSION FOCK(*)
+      PARAMETER (ZERO=0.D0)
+
+      SHIF=ZERO
+      NA1=NA+1
+      IF(NA1.GT.NCOORB)RETURN
+      IF(FIXED)GOTO 10
+      II=NA*(NA+1)/2
+      JJ=NA1*(NA1+1)/2
+      GAP=FOCK(JJ)-FOCK(II)
+      GG=GAP1
+      IF(ITER.GT.NCYC)GG=GAP2
+      IF(GAP.GE.GG)RETURN
+      SHIF=GG-GAP
+      RETURN
+
+10    SHIF=SH1
+      IF(ITER.GT.NCYC)SHIF=SH2
+      RETURN
+      END
+
+C  LSHIFT  M2
+
+      SUBROUTINE LSHIFT(H,NCOORB,NA,IA,SHIF,DAMP)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION H(*),IA(*)
+
+      M=NA+1
+      IF (M.GT.NCOORB) RETURN
+      DO 100 I=M,NCOORB
+        K=IA(I)
+        KPI = K+I
+        H(KPI)=H(KPI)+SHIF
+        DO 11 J=1,NA
+          KPJ = K+J
+11        H(KPJ)=H(KPJ)*DAMP
+100     CONTINUE
+
+      RETURN
+      END
+
+C  LOCKER  M2
+
+      SUBROUTINE LOCKER(E,V,NBASIS,NMOS,NDIM)
+      IMPLICIT REAL*8(A-H,O-Z)
+      include 'dimmm'
+      DIMENSION E(*),V(NDIM,*)
+      LOGICAL LMAX
+      COMMON/SMALL/MAX(NBF1),LMAX(NBF1),XJNK(105)
+
+      DO 10 I=1,NMOS
+   10   LMAX(I)=.FALSE.
+      DO 30 I=1,NMOS
+        DUM=0.0D0
+        DO 20 J=1,NBASIS
+          IF(LMAX(J))GOTO 20
+          IF(DABS(V(J,I)).LE.DUM)GOTO 20
+          DUM=DABS(V(J,I))
+          IMAX=J
+   20     CONTINUE
+        LMAX(IMAX)=.TRUE.
+        MAX(I)=IMAX
+        IF(V(IMAX,I).GE.0.0)GOTO 30
+        DO 35 J=1,NBASIS
+35        V(J,I)=-V(J,I)
+30      CONTINUE
+      DO 80 I=1,NMOS
+        IF(MAX(I).EQ.I)GOTO 80
+        DO 40 J=I,NMOS
+          IF(MAX(J).NE.I)GOTO 40
+          JJ=J
+          GOTO 60
+   40     CONTINUE
+        WRITE(9,50)
+        write(10,50)
+   50 FORMAT(//10X,'ERROR IN LOCKER')
+        WRITE(9,55) I,(MAX(J),J=1,NMOS)
+        write(10,55) I,(MAX(J),J=1,NMOS)
+55    FORMAT(//10X,I6//(10X,8I8))
+        call honder(25,'LOCKER')
+
+   60   DUM=E(JJ)
+        E(JJ)=E(I)
+        E(I)=DUM
+        DO 70 J=1,NBASIS
+          DUM=V(J,JJ)
+          V(J,JJ)=V(J,I)
+   70     V(J,I)=DUM
+        MAX(JJ)=MAX(I)
+        MAX(I)=I
+   80   CONTINUE
+      RETURN
+      END
+
+      SUBROUTINE ORDER(V,E,NUMSCF,NCOORB,NDIM,NA,ICA)
+      IMPLICIT REAL*8(A-H,O-Z)
+      DIMENSION E(*),V(NDIM,*)
+
+      NA1=NA+1
+      IF(NA1.GT.NCOORB)RETURN
+      IF(E(NA1).GE.E(NA))RETURN
+      ICA=0
+      DO 30 IM=1,NCOORB
+        DUM=E(IM)
+        MIN=IM
+        DO 10 JM=IM,NCOORB
+          IF(E(JM).GE.DUM)GOTO 10
+          DUM=E(JM)
+          MIN=JM
+10        CONTINUE
+        IF(MIN.EQ.IM)GOTO 30
+        ICA=ICA+1
+        DUM=E(IM)
+        E(IM)=E(MIN)
+        E(MIN)=DUM
+        DO 20 I=1,NUMSCF
+          DUM=V(I,IM)
+          V(I,IM)=V(I,MIN)
+20        V(I,MIN)=DUM
+30      CONTINUE
+      IF(ICA.NE.0) write(10,1001)
+      IF(ICA.NE.0) WRITE(9,1001)
+1001  FORMAT(1H ,'  ORBITALS REORDERED')
+      RETURN
+      END
+

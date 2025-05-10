@@ -1,0 +1,1702 @@
+
+ Date :  2/12/2010
+ Time :  7:33:46.51
+
+
+                                     HAVMOL
+
+             Ab Initio Hartree-Fock Molecular Orbital Calculations
+
+     Version 1.1 by Luis A. Montero, University of Havana, Havana, June 1993
+                after the IBM PC MICROMOL, Cambridge, Sept. 1987
+                          by R.D. Amos and S.M. Colwell
+
+                    Maximum number of atoms:            12
+                    Maximum number of shells:           30
+                    Maximum number of basis functions:  63
+                    Maximum number of primitives:      110
+
+
+
+ -------------------------------------------------------------------------------
+ H2O, STO-3G                                                                    
+ -------------------------------------------------------------------------------
+
+
+
+ THE POINT GROUP OF THE MOLECULE IS ...CNV     
+ THE ORDER OF THE PRINCIPAL AXIS IS ...  2
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+          ********************
+
+          MOLECULAR BASIS SET
+
+          ********************
+
+
+ ******************************************************************************
+
+  ATOM     NUCLEAR               COORDINATES                 NUMBER OF
+           CHARGE       X             Y              Z       SHELLS
+
+ ******************************************************************************
+
+ OXYGEN      8.0    .0000000       .0000000       .0000000    3
+                                                                 1S  2S  2P  
+
+ HYDROGEN    1.0  -1.4361924       .0000000      1.1338361    1
+                                                                 1S  
+
+ HYDROGEN    1.0   1.4361924       .0000000      1.1338361    1
+                                                                 1S  
+
+ ******************************************************************************
+
+ CONTRACTED PRIMITIVE FUNCTIONS
+
+ Atom Shell Type   Primitive  Exponents        Contraction coefficients
+
+ OXYGEN  
+
+
+        1    1S       1      130.709321       4.251943  (   .154329 )
+        1    1S       2       23.808866       4.112292  (   .535328 )
+        1    1S       3        6.443608       1.281623  (   .444635 )
+
+
+        2    2S       4        5.033151       -.239412  (  -.099967 )
+        2    2S       5        1.169596        .320234  (   .399513 )
+        2    2S       6         .380389        .241685  (   .700115 )
+
+
+        3    2P       7        5.033151       1.675447  (   .155916 )
+        3    2P       8        1.169596       1.053569  (   .607684 )
+        3    2P       9         .380389        .166903  (   .391957 )
+
+ HYDROGEN
+
+
+        5    1S      10        3.425251        .276934  (   .154329 )
+        5    1S      11         .623914        .267839  (   .535328 )
+        5    1S      12         .168855        .083474  (   .444635 )
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.82982   1--3  1.82982
+     [ .96830]       [ .96830]
+
+ BOND ANGLES
+
+  2--1--3  103.419674
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ CONVERGENCE EXPONENT IS BEING SET TO 7 TO RUN "OPTIMIZE" OR "FORCE" OPTIONS
+
+
+
+
+ MAIN FILE ON  <fn>.ED2 STARTING AT BLOCK   1
+ DUMP FILE ON  <fn>.ED3 STARTING AT BLOCK   1
+ SCRATCH FILE ON   .ED7 STARTING AT BLOCK   1
+
+
+
+ START
+
+ TIME LIMIT =  86400.000
+ OUTPUT OPTION =    -1
+ PREFACTOR TOLERANCE FOR INTEGRALS = 1.0D-18
+ INTEGRAL CUTOFF = 1.0D-10
+ OPTION FOR NORMALIZATION OF BASIS FUNCTIONS =     0
+ OPTION FOR UNNORMALIZATION OF PRIMITIVES =     0
+ RESTART OPTION =    -1
+
+ STARTING SHELLS FOR 2E-INTEGRALS =     1    1    1    1
+ RECORD NUMBER =          1
+ LOCATION OF FIRST INTEGRAL IN THIS RECORD =     1
+
+ TOTAL NUMBER OF SHELLS                      =    5
+ TOTAL NUMBER OF BASIS FUNCTIONS             =    7
+ NUMBER OF ELECTRONS                         =   10
+ CHARGE OF MOLECULE                          =    0
+ STATE MULTIPLICITY                          =    1
+ NUMBER OF DOUBLY OCCUPIED ORBITALS          =    5
+ NO OF SINGLY OCCUPIED ORBITALS (ALPHA)      =    0
+ NO OF SINGLY OCCUPIED ORBITALS (BETA)       =    0
+ TOTAL NUMBER OF ATOMS                       =    3
+ SCFTYP = CLOSED  
+ RUNTYP = OPTIMIZE
+  GUESS = HCORE   
+
+
+      **********************************************************************
+                               GEOMETRY OPTIMIZATION
+      **********************************************************************
+
+      Convergence threshold on gradient =  .00100000
+
+                                   -------------------
+  Point  0                         Nuclear coordinates
+                                   -------------------
+
+                  Atom             x                   y                   z
+
+       1  OXYGEN             .0000000000         .0000000000         .0000000000
+       2  HYDROGEN         -1.4361924271         .0000000000        1.1338361267
+       3  HYDROGEN          1.4361924271         .0000000000        1.1338361267
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.82982   1--3  1.82982
+     [ .96830]       [ .96830]
+
+ BOND ANGLES
+
+  2--1--3  103.419674
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ ..... Calculation of one-electron integrals .....
+
+
+ ..... End of one-electron integral calculation .....
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .00 s
+                        Remaining           86400.00 s
+ -------------------------------------------------------------------------------
+
+ ....... Two-electron integrals ......
+
+ I,J,K,L =  1,  1,  1,  1, NREC=     1 ILC=     2 DEL(T) =     .00 T=       .00
+ I,J,K,L =  2,  2,  2,  2, NREC=     1 ILC=     7 DEL(T) =     .00 T=       .00
+ I,J,K,L =  3,  3,  3,  3, NREC=     1 ILC=    34 DEL(T) =     .05 T=       .05
+ I,J,K,L =  4,  4,  4,  4, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .05
+ I,J,K,L =  5,  5,  5,  5, NREC=     1 ILC=   140 DEL(T) =     .06 T=       .11
+
+ Total number of two-electron integrals=      139
+ There are       1 record(s) of two-electron integrals,  INTLOC= 140
+ IST=    1 JST=    1 KST=    1 LST=    1
+
+ End of two-electron integrals, IREST= 2
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            0
+
+
+ TIME FOR INTEGRAL EVALUATION       .110 SECS.
+ TOTAL ELAPSED TIME                 .110 SECS.
+
+
+
+ HCORE, NB =    5   SCFTYP = CLOSED  
+
+
+         INITIAL GUESS ORBITALS GENERATED FROM ONE-ELECTRON HAMILTONIAN
+
+
+ IN HCORE, NB =    5  NOCT =    5  SCFTYP = CLOSED  
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .05 s
+                        Total used               .16 s
+                        Remaining           86399.84 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/12/2010                                         Time :  7:33:54.69
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    19 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ *  5   Overlap Matrix     5    15          1
+ *  6   One Electr. H      6    16          1
+ *  7   Density Matrix     7    17          1
+ *  8   Wave Functions     8    18          1
+ *  9   Eigenvalues        9    19          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .16000000E+00 SECS.
+                                   =          .00004 HOURS
+
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+
+ SCF : the available core is    4095 words for the maximum number of terms in
+       a matrix; used      57 of them.
+
+ ----- NUCLEAR ENERGY ----- =       9.092182915088
+
+
+     VARIABLE LEVEL SHIFTERS USED
+
+     MINIMUM OCC.-VIRT. SEPARATION  1.00 UNTIL CYCLE    5 THEN   .50
+
+
+     EXTRAPOLATION USED
+
+ CONVERGENCE DATA
+
+ MAXIMUM NUMBER OF ITERATIONS =     50
+ CONVERGENCE CRITERION        = 1.0D- 7
+
+  CYC   TOTAL        ELECTRONIC        DEL(E)    DEL(D)   DEL(T)     RUN   SHIF
+        ENERGY         ENERGY                                       TIME
+
+   1   -73.23652    -82.3287022    -82.3287022  .8761802     .00       .16  .87
+   2   -74.55886    -83.6510444     -1.3223422  .6375397     .00       .16  .37
+   3   -74.95117    -84.0433509      -.3923066  .1251377     .00       .16  .06
+   4   -74.96436    -84.0565433      -.0131924  .0201998     .00       .16  .01
+   5   -74.96451    -84.0566958      -.0001524  .0067345     .00       .16  .01
+   6   -74.96453    -84.0567162      -.0000204  .0025393     .00       .16  .00
+   7   -74.96454    -84.0567197      -.0000035  .0009841     .00       .16  .00
+   8   -74.96454    -84.0567204      -.0000006  .0003996     .00       .16  .00
+ ..... 4-POINT EXTRAPOLATION ..... 
+   9   -74.96454    -84.0567205      -.0000001  .0003054     .00       .16  .00
+  10   -74.96454    -84.0567205       .0000000  .0000012     .06       .22  .00
+  11   -74.96454    -84.0567205       .0000000  .0000005     .00       .22  .00
+  12   -74.96454    -84.0567205       .0000000  .0000002     .00       .22  .00
+  13   -74.96454    -84.0567205       .0000000  .0000001     .00       .22  .00
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+
+
+          FINAL VALUES OF TOTAL ENERGY AND ELECTRONIC ENERGY ARE 
+                            -74.964537619 AND     -84.056720534
+
+          -----------
+          EIGENVALUES
+          -----------
+                               au                    ev
+
+                     1    -20.244591062028      -550.887936834
+                     2     -1.264089493889       -34.397911577
+                     3      -.610318640915       -16.607753443
+                     4      -.454297182837       -12.362158218
+                     5      -.391368499893       -10.649767377
+                     6       .596639579472        16.235524144
+                     7       .726147401821        19.759640627
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+
+                -20.24459106  -1.26408949   -.61031864   -.45429718   -.39136850
+
+
+                      1            2            3            4            5
+
+
+    1  O   s       .99415879   -.23313906    .00000000    .10327535    .00000000
+    2  O   s       .02631473    .83734583    .00000000   -.53644478    .00000000
+    3  O   x       .00000000    .00000000   -.60766967    .00000000    .00000000
+    4  O   y       .00000000    .00000000    .00000000    .00000000   1.00000000
+    5  O   z       .00427250    .12688329    .00000000    .77087621    .00000000
+    6  H   s      -.00584021    .15774887    .44633536    .28344431    .00000000
+    7  H   s      -.00584021    .15774887   -.44633536    .28344431    .00000000
+
+
+                   .59663958    .72614740
+
+
+                      6            7
+
+
+    1  O   s       .13032553    .00000000
+    2  O   s      -.86303710    .00000000
+    3  O   x       .00000000    .98110303
+    4  O   y       .00000000    .00000000
+    5  O   z      -.74757696    .00000000
+    6  H   s       .78793024    .82951696
+    7  H   s       .78793024   -.82951696
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .22 s
+                        Remaining           86399.78 s
+ -------------------------------------------------------------------------------
+
+          .....END OF SCF.....,IREST=   0
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+          ----------------------
+          Hellmann-Feynman force
+          ----------------------
+
+
+     ATOM       1             2             3
+
+
+       E'X -.1945018E-13  .7692377E-01 -.7692377E-01
+       E'Y  .9554928E-15 -.3539779E-15  .5929659E-16
+       E'Z  .3088730E+01 -.2130086E-01 -.2130086E-01
+
+ ...... End of Hellmann-Feynman force ......
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .22 s
+                        Remaining           86399.78 s
+ -------------------------------------------------------------------------------
+
+
+
+ GRADIENTS: core used    3894 words
+
+          ----------------------
+          GRADIENT OF THE ENERGY
+          ----------------------
+
+  I,J,K,L =   1,   1,   1,   1, CYCLE TIME:        .00 TOTAL TIME:        .22
+  I,J,K,L =   2,   2,   2,   2, CYCLE TIME:        .00 TOTAL TIME:        .22
+  I,J,K,L =   3,   3,   3,   3, CYCLE TIME:        .00 TOTAL TIME:        .22
+  I,J,K,L =   5,   5,   5,   5, CYCLE TIME:        .11 TOTAL TIME:        .33
+
+
+     ATOM       1              2              3
+
+
+       E'X   .0000000D+00   .1405863D-01  -.1405863D-01
+       E'Y  -.1733337D-30  -.4542464D-16   .5835568D-31
+       E'Z   .4188104D-01  -.2094052D-01  -.2094052D-01
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3           21
+ .ED7            5
+
+
+           End of calculation of the energy gradient, IREST =   0
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .33 s
+                        Remaining           86399.67 s
+ -------------------------------------------------------------------------------
+ Line search  1
+                                   -------------------
+  Point  1                         Nuclear coordinates
+                                   -------------------
+
+                  Atom             x                   y                   z
+
+       1  OXYGEN             .0000000000         .0000000000        -.0418810445
+       2  HYDROGEN         -1.4502510616         .0000000000        1.1547766489
+       3  HYDROGEN          1.4502510616         .0000000000        1.1547766489
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.88022   1--3  1.88022
+     [ .99497]       [ .99497]
+
+ BOND ANGLES
+
+  2--1--3  100.945308
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ ..... Calculation of one-electron integrals .....
+
+
+ ..... End of one-electron integral calculation .....
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .33 s
+                        Remaining           86399.67 s
+ -------------------------------------------------------------------------------
+
+ ....... Two-electron integrals ......
+
+ I,J,K,L =  1,  1,  1,  1, NREC=     1 ILC=     2 DEL(T) =     .00 T=       .33
+ I,J,K,L =  2,  2,  2,  2, NREC=     1 ILC=     7 DEL(T) =     .00 T=       .33
+ I,J,K,L =  3,  3,  3,  3, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .33
+ I,J,K,L =  4,  4,  4,  4, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .33
+ I,J,K,L =  5,  5,  5,  5, NREC=     1 ILC=   140 DEL(T) =     .05 T=       .38
+
+ Total number of two-electron integrals=      139
+ There are       1 record(s) of two-electron integrals,  INTLOC= 140
+ IST=    1 JST=    1 KST=    1 LST=    1
+
+ End of two-electron integrals, IREST= 2
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+ TIME FOR INTEGRAL EVALUATION       .050 SECS.
+ TOTAL ELAPSED TIME                 .380 SECS.
+
+
+
+ Initial guess orbitals to be read from dumpfile .ED3
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .38 s
+                        Remaining           86399.62 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/12/2010                                         Time :  7:33:54.91
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    21 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ *  5   Overlap Matrix     5    15          1
+ *  6   One Electr. H      6    16          1
+ *  7   Density Matrix     7    17          1
+ *  8   Wave Functions     8    18          1
+ *  9   Eigenvalues        9    19          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 14   Gradients         14    20          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 16   Inv.Hessian       16    21          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .38000000E+00 SECS.
+                                   =          .00011 HOURS
+
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+
+ SCF : the available core is    4095 words for the maximum number of terms in
+       a matrix; used      57 of them.
+
+ ----- NUCLEAR ENERGY ----- =       8.854421779262
+
+
+     VARIABLE LEVEL SHIFTERS USED
+
+     MINIMUM OCC.-VIRT. SEPARATION  1.00 UNTIL CYCLE    5 THEN   .50
+
+
+     EXTRAPOLATION USED
+
+ CONVERGENCE DATA
+
+ MAXIMUM NUMBER OF ITERATIONS =     50
+ CONVERGENCE CRITERION        = 1.0D- 7
+
+  CYC   TOTAL        ELECTRONIC        DEL(E)    DEL(D)   DEL(T)     RUN   SHIF
+        ENERGY         ENERGY                                       TIME
+
+   1   -74.96544    -83.8198656    -83.8198656  .0235613     .00       .38  .04
+   2   -74.96574    -83.8201591      -.0002934  .0069303     .00       .38  .03
+   3   -74.96577    -83.8201942      -.0000351  .0030227     .00       .38  .03
+   4   -74.96578    -83.8202014      -.0000072  .0013613     .00       .38  .03
+   5   -74.96578    -83.8202029      -.0000015  .0006283     .00       .38  .03
+ ..... 4-POINT EXTRAPOLATION ..... 
+   6   -74.96578    -83.8202032      -.0000003  .0005393     .00       .38  .00
+   7   -74.96578    -83.8202033      -.0000001  .0000046     .00       .38  .00
+   8   -74.96578    -83.8202033       .0000000  .0000013     .00       .38  .00
+   9   -74.96578    -83.8202033       .0000000  .0000004     .06       .44  .00
+  10   -74.96578    -83.8202033       .0000000  .0000001     .00       .44  .00
+  11   -74.96578    -83.8202033       .0000000  .0000000     .00       .44  .00
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+
+
+          FINAL VALUES OF TOTAL ENERGY AND ELECTRONIC ENERGY ARE 
+                            -74.965781552 AND     -83.820203331
+
+          -----------
+          EIGENVALUES
+          -----------
+                               au                    ev
+
+                     1    -20.251225859634      -551.068480365
+                     2     -1.253942387554       -34.121792467
+                     3      -.592665107210       -16.127372351
+                     4      -.456902087162       -12.433041861
+                     5      -.391746761582       -10.660060487
+                     6       .575111020870        15.649697382
+                     7       .688858910263        18.744960700
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+
+                -20.25122586  -1.25394239   -.59266511   -.45690209   -.39174676
+
+
+                      1            2            3            4            5
+
+
+    1  O   s      -.99422669    .23408415    .00000000    .10312807    .00000000
+    2  O   s      -.02575422   -.84677291    .00000000   -.53343470    .00000000
+    3  O   x       .00000000    .00000000   -.61109355    .00000000    .00000000
+    4  O   y       .00000000    .00000000    .00000000    .00000000   1.00000000
+    5  O   z      -.00408787   -.12008949    .00000000    .75760620    .00000000
+    6  H   s       .00553520   -.15522325    .44905782    .29624933    .00000000
+    7  H   s       .00553520   -.15522325   -.44905782    .29624933    .00000000
+
+
+                   .57511102    .68885891
+
+
+                      6            7
+
+
+    1  O   s       .12543770    .00000000
+    2  O   s      -.81332519    .00000000
+    3  O   x       .00000000    .95961038
+    4  O   y       .00000000    .00000000
+    5  O   z      -.75849617    .00000000
+    6  H   s       .76666134    .80907663
+    7  H   s       .76666134   -.80907663
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .44 s
+                        Remaining           86399.56 s
+ -------------------------------------------------------------------------------
+
+          .....END OF SCF.....,IREST=   0
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+          ----------------------
+          Hellmann-Feynman force
+          ----------------------
+
+
+     ATOM       1             2             3
+
+
+       E'X -.1742970E-13  .5787917E-01 -.5787917E-01
+       E'Y  .7106511E-15 -.2873583E-15  .5302756E-16
+       E'Z  .2987259E+01 -.6981214E-02 -.6981214E-02
+
+ ...... End of Hellmann-Feynman force ......
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .44 s
+                        Remaining           86399.56 s
+ -------------------------------------------------------------------------------
+
+
+
+ GRADIENTS: core used    3894 words
+
+          ----------------------
+          GRADIENT OF THE ENERGY
+          ----------------------
+
+  I,J,K,L =   1,   1,   1,   1, CYCLE TIME:        .00 TOTAL TIME:        .44
+  I,J,K,L =   2,   2,   2,   2, CYCLE TIME:        .00 TOTAL TIME:        .44
+  I,J,K,L =   3,   3,   3,   3, CYCLE TIME:        .00 TOTAL TIME:        .44
+  I,J,K,L =   5,   5,   5,   5, CYCLE TIME:        .05 TOTAL TIME:        .49
+
+
+     ATOM       1              2              3
+
+
+       E'X   .0000000D+00  -.7282330D-02   .7282330D-02
+       E'Y   .6991126D-31   .2352983D-16   .3042969D-31
+       E'Z  -.4444012D-02   .2222006D-02   .2222006D-02
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3           21
+ .ED7            5
+
+
+           End of calculation of the energy gradient, IREST =   0
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .49 s
+                        Remaining           86399.51 s
+ -------------------------------------------------------------------------------
+
+
+     Search  Update  Points     Energy        Gradient norm      alpha
+        1       1       1     -74.96578155      .01164854       1.00000
+
+          Status: CONTINUE SEARCH CYCLES
+
+          Previous energy     -74.96453762
+
+              Convergence       -.00124393
+
+
+                      Coordinates (Bohr)              Gradient (Hartree/Bohr)
+   Atom       Z       x         y         z             x         y         z
+
+ 1 OXYGEN    8.0   .000000   .000000  -.041881       .000000   .000000  -.004444
+ 2 HYDROGEN  1.0 -1.450251   .000000  1.154777      -.007282   .000000   .002222
+ 3 HYDROGEN  1.0  1.450251   .000000  1.154777       .007282   .000000   .002222
+
+ Largest component of gradient =      .0072823 ( tolerance =       .0010000 )
+ Previous largest component of gradient =      .0418810
+ Line search  2
+                                   -------------------
+  Point  2                         Nuclear coordinates
+                                   -------------------
+
+                  Atom             x                   y                   z
+
+       1  OXYGEN             .0000000000         .0000000000        -.0384101996
+       2  HYDROGEN         -1.4445634454         .0000000000        1.1530412265
+       3  HYDROGEN          1.4445634454         .0000000000        1.1530412265
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.87252   1--3  1.87252
+     [ .99089]       [ .99089]
+
+ BOND ANGLES
+
+  2--1--3  100.969532
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ ..... Calculation of one-electron integrals .....
+
+
+ ..... End of one-electron integral calculation .....
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .49 s
+                        Remaining           86399.51 s
+ -------------------------------------------------------------------------------
+
+ ....... Two-electron integrals ......
+
+ I,J,K,L =  1,  1,  1,  1, NREC=     1 ILC=     2 DEL(T) =     .00 T=       .49
+ I,J,K,L =  2,  2,  2,  2, NREC=     1 ILC=     7 DEL(T) =     .00 T=       .49
+ I,J,K,L =  3,  3,  3,  3, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .49
+ I,J,K,L =  4,  4,  4,  4, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .49
+ I,J,K,L =  5,  5,  5,  5, NREC=     1 ILC=   140 DEL(T) =     .11 T=       .60
+
+ Total number of two-electron integrals=      139
+ There are       1 record(s) of two-electron integrals,  INTLOC= 140
+ IST=    1 JST=    1 KST=    1 LST=    1
+
+ End of two-electron integrals, IREST= 2
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+ TIME FOR INTEGRAL EVALUATION       .110 SECS.
+ TOTAL ELAPSED TIME                 .600 SECS.
+
+
+
+ Initial guess orbitals to be read from dumpfile .ED3
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .60 s
+                        Remaining           86399.40 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/12/2010                                         Time :  7:33:55.13
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    21 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ *  5   Overlap Matrix     5    15          1
+ *  6   One Electr. H      6    16          1
+ *  7   Density Matrix     7    17          1
+ *  8   Wave Functions     8    18          1
+ *  9   Eigenvalues        9    19          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 14   Gradients         14    20          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 16   Inv.Hessian       16    21          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .60000000E+00 SECS.
+                                   =          .00017 HOURS
+
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+
+ SCF : the available core is    4095 words for the maximum number of terms in
+       a matrix; used      57 of them.
+
+ ----- NUCLEAR ENERGY ----- =       8.890773895033
+
+
+     VARIABLE LEVEL SHIFTERS USED
+
+     MINIMUM OCC.-VIRT. SEPARATION  1.00 UNTIL CYCLE    5 THEN   .50
+
+
+     EXTRAPOLATION USED
+
+ CONVERGENCE DATA
+
+ MAXIMUM NUMBER OF ITERATIONS =     50
+ CONVERGENCE CRITERION        = 1.0D- 7
+
+  CYC   TOTAL        ELECTRONIC        DEL(E)    DEL(D)   DEL(T)     RUN   SHIF
+        ENERGY         ENERGY                                       TIME
+
+   1   -74.96585    -83.8566221    -83.8566221  .0024468     .00       .60  .03
+   2   -74.96585    -83.8566253      -.0000032  .0005920     .00       .60  .03
+   3   -74.96585    -83.8566256      -.0000003  .0002685     .00       .60  .03
+   4   -74.96585    -83.8566256      -.0000001  .0001188     .00       .60  .03
+   5   -74.96585    -83.8566257       .0000000  .0000546     .00       .60  .03
+ ..... 4-POINT EXTRAPOLATION ..... 
+   6   -74.96585    -83.8566257       .0000000  .0000463     .00       .60  .00
+   7   -74.96585    -83.8566257       .0000000  .0000003     .00       .60  .00
+   8   -74.96585    -83.8566257       .0000000  .0000001     .00       .60  .00
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+
+
+          FINAL VALUES OF TOTAL ENERGY AND ELECTRONIC ENERGY ARE 
+                            -74.965851766 AND     -83.856625661
+
+          -----------
+          EIGENVALUES
+          -----------
+                               au                    ev
+
+                     1    -20.250649354123      -551.052792722
+                     2     -1.255834362732       -34.173276159
+                     3      -.594733016173       -16.183643485
+                     4      -.457347514535       -12.445162657
+                     5      -.391915148227       -10.664642559
+                     6       .578925533940        15.753496428
+                     7       .693493286555        18.871069545
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+
+                -20.25064935  -1.25583436   -.59473302   -.45734751   -.39191515
+
+
+                      1            2            3            4            5
+
+
+    1  O   s       .99421740    .23390575    .00000000    .10338296    .00000000
+    2  O   s       .02583203   -.84524167    .00000000   -.53499275    .00000000
+    3  O   x       .00000000    .00000000   -.61109250    .00000000    .00000000
+    4  O   y       .00000000    .00000000    .00000000    .00000000   1.00000000
+    5  O   z       .00412554   -.12145926    .00000000    .75850791    .00000000
+    6  H   s      -.00557755   -.15558206    .44884461    .29469940    .00000000
+    7  H   s      -.00557755   -.15558206   -.44884461    .29469940    .00000000
+
+
+                   .57892553    .69349329
+
+
+                      6            7
+
+
+    1  O   s      -.12602761    .00000000
+    2  O   s       .81992442    .00000000
+    3  O   x       .00000000    .96179377
+    4  O   y       .00000000    .00000000
+    5  O   z       .75868784    .00000000
+    6  H   s      -.76939826    .81240517
+    7  H   s      -.76939826   -.81240517
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .60 s
+                        Remaining           86399.40 s
+ -------------------------------------------------------------------------------
+
+          .....END OF SCF.....,IREST=   0
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+          ----------------------
+          Hellmann-Feynman force
+          ----------------------
+
+
+     ATOM       1             2             3
+
+
+       E'X -.1765343E-13  .6107600E-01 -.6107600E-01
+       E'Y  .7440477E-15 -.2871195E-15  .5180769E-16
+       E'Z  .3002437E+01 -.8967712E-02 -.8967712E-02
+
+ ...... End of Hellmann-Feynman force ......
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .60 s
+                        Remaining           86399.40 s
+ -------------------------------------------------------------------------------
+
+
+
+ GRADIENTS: core used    3894 words
+
+          ----------------------
+          GRADIENT OF THE ENERGY
+          ----------------------
+
+  I,J,K,L =   1,   1,   1,   1, CYCLE TIME:        .00 TOTAL TIME:        .60
+  I,J,K,L =   2,   2,   2,   2, CYCLE TIME:        .00 TOTAL TIME:        .60
+  I,J,K,L =   3,   3,   3,   3, CYCLE TIME:        .00 TOTAL TIME:        .60
+  I,J,K,L =   5,   5,   5,   5, CYCLE TIME:        .11 TOTAL TIME:        .71
+
+
+     ATOM       1              2              3
+
+
+       E'X   .0000000D+00  -.3531540D-02   .3531540D-02
+       E'Y   .1034224D-30   .1141071D-16   .3977045D-31
+       E'Z   .1173691D-02  -.5868453D-03  -.5868453D-03
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3           21
+ .ED7            5
+
+
+           End of calculation of the energy gradient, IREST =   0
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .71 s
+                        Remaining           86399.29 s
+ -------------------------------------------------------------------------------
+
+
+     Search  Update  Points     Energy        Gradient norm      alpha
+        2       2       2     -74.96585177      .00519710       1.00000
+
+          Status: CONTINUE SEARCH CYCLES
+
+          Previous energy     -74.96578155
+
+              Convergence       -.00007021
+
+
+                      Coordinates (Bohr)              Gradient (Hartree/Bohr)
+   Atom       Z       x         y         z             x         y         z
+
+ 1 OXYGEN    8.0   .000000   .000000  -.038410       .000000   .000000   .001174
+ 2 HYDROGEN  1.0 -1.444563   .000000  1.153041      -.003532   .000000  -.000587
+ 3 HYDROGEN  1.0  1.444563   .000000  1.153041       .003532   .000000  -.000587
+
+ Largest component of gradient =      .0035315 ( tolerance =       .0010000 )
+ Previous largest component of gradient =      .0072823
+ Line search  3
+                                   -------------------
+  Point  3                         Nuclear coordinates
+                                   -------------------
+
+                  Atom             x                   y                   z
+
+       1  OXYGEN             .0000000000         .0000000000        -.0434127207
+       2  HYDROGEN         -1.4344035124         .0000000000        1.1555424870
+       3  HYDROGEN          1.4344035124         .0000000000        1.1555424870
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.86949   1--3  1.86949
+     [ .98929]       [ .98929]
+
+ BOND ANGLES
+
+  2--1--3  100.218447
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ ..... Calculation of one-electron integrals .....
+
+
+ ..... End of one-electron integral calculation .....
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .71 s
+                        Remaining           86399.29 s
+ -------------------------------------------------------------------------------
+
+ ....... Two-electron integrals ......
+
+ I,J,K,L =  1,  1,  1,  1, NREC=     1 ILC=     2 DEL(T) =     .00 T=       .71
+ I,J,K,L =  2,  2,  2,  2, NREC=     1 ILC=     7 DEL(T) =     .00 T=       .71
+ I,J,K,L =  3,  3,  3,  3, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .71
+ I,J,K,L =  4,  4,  4,  4, NREC=     1 ILC=    34 DEL(T) =     .00 T=       .71
+ I,J,K,L =  5,  5,  5,  5, NREC=     1 ILC=   140 DEL(T) =     .00 T=       .71
+
+ Total number of two-electron integrals=      139
+ There are       1 record(s) of two-electron integrals,  INTLOC= 140
+ IST=    1 JST=    1 KST=    1 LST=    1
+
+ End of two-electron integrals, IREST= 2
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+ TIME FOR INTEGRAL EVALUATION       .000 SECS.
+ TOTAL ELAPSED TIME                 .710 SECS.
+
+
+
+ Initial guess orbitals to be read from dumpfile .ED3
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .71 s
+                        Remaining           86399.29 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/12/2010                                         Time :  7:33:55.24
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    21 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ *  5   Overlap Matrix     5    15          1
+ *  6   One Electr. H      6    16          1
+ *  7   Density Matrix     7    17          1
+ *  8   Wave Functions     8    18          1
+ *  9   Eigenvalues        9    19          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 14   Gradients         14    20          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 16   Inv.Hessian       16    21          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .71000000E+00 SECS.
+                                   =          .00020 HOURS
+
+
+          -------------------
+          RHF SCF CALCULATION
+          -------------------
+
+
+ SCF : the available core is    4095 words for the maximum number of terms in
+       a matrix; used      57 of them.
+
+ ----- NUCLEAR ENERGY ----- =       8.907043468662
+
+
+     VARIABLE LEVEL SHIFTERS USED
+
+     MINIMUM OCC.-VIRT. SEPARATION  1.00 UNTIL CYCLE    5 THEN   .50
+
+
+     EXTRAPOLATION USED
+
+ CONVERGENCE DATA
+
+ MAXIMUM NUMBER OF ITERATIONS =     50
+ CONVERGENCE CRITERION        = 1.0D- 7
+
+  CYC   TOTAL        ELECTRONIC        DEL(E)    DEL(D)   DEL(T)     RUN   SHIF
+        ENERGY         ENERGY                                       TIME
+
+   1   -74.96590    -83.8729396    -83.8729396  .0018667     .06       .77  .03
+   2   -74.96590    -83.8729414      -.0000018  .0007038     .00       .77  .03
+   3   -74.96590    -83.8729417      -.0000003  .0002856     .00       .77  .03
+   4   -74.96590    -83.8729418      -.0000001  .0001295     .00       .77  .03
+   5   -74.96590    -83.8729418       .0000000  .0000589     .00       .77  .03
+ ..... 4-POINT EXTRAPOLATION ..... 
+   6   -74.96590    -83.8729418       .0000000  .0000492     .00       .77  .00
+   7   -74.96590    -83.8729418       .0000000  .0000000     .00       .77  .00
+   8   -74.96590    -83.8729418       .0000000  .0000000     .00       .77  .00
+
+          -----------------
+          DENSITY CONVERGED
+          -----------------
+
+
+          FINAL VALUES OF TOTAL ENERGY AND ELECTRONIC ENERGY ARE 
+                            -74.965898349 AND     -83.872941818
+
+          -----------
+          EIGENVALUES
+          -----------
+                               au                    ev
+
+                     1    -20.251336913624      -551.071502323
+                     2     -1.257400159188       -34.215884003
+                     3      -.594244783800       -16.170357896
+                     4      -.459298280050       -12.498246130
+                     5      -.392495598993       -10.680437559
+                     6       .581613256170        15.826633679
+                     7       .693306847060        18.865996226
+
+          ------------
+          EIGENVECTORS
+          ------------
+
+
+                -20.25133691  -1.25740016   -.59424478   -.45929828   -.39249560
+
+
+                      1            2            3            4            5
+
+
+    1  O   s       .99421567    .23377611    .00000000    .10393075    .00000000
+    2  O   s       .02585202   -.84445389    .00000000   -.53768801    .00000000
+    3  O   x       .00000000    .00000000   -.61237145    .00000000    .00000000
+    4  O   y       .00000000    .00000000    .00000000    .00000000   1.00000000
+    5  O   z       .00416043   -.12270204    .00000000    .75649720    .00000000
+    6  H   s      -.00558696   -.15562693    .44912510    .29486434    .00000000
+    7  H   s      -.00558696   -.15562693   -.44912510    .29486434    .00000000
+
+
+                   .58161326    .69330685
+
+
+                      6            7
+
+
+    1  O   s      -.12592191    .00000000
+    2  O   s       .82077737    .00000000
+    3  O   x       .00000000    .96042775
+    4  O   y       .00000000    .00000000
+    5  O   z       .76260005    .00000000
+    6  H   s      -.76949482    .81453244
+    7  H   s      -.76949482   -.81453244
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .77 s
+                        Remaining           86399.23 s
+ -------------------------------------------------------------------------------
+
+          .....END OF SCF.....,IREST=   0
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3            3
+ .ED7            5
+
+
+          ----------------------
+          Hellmann-Feynman force
+          ----------------------
+
+
+     ATOM       1             2             3
+
+
+       E'X -.1721285E-13  .6356259E-01 -.6356259E-01
+       E'Y  .7539056E-15 -.2940025E-15  .5330377E-16
+       E'Z  .3007565E+01 -.9633863E-02 -.9633863E-02
+
+ ...... End of Hellmann-Feynman force ......
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .77 s
+                        Remaining           86399.23 s
+ -------------------------------------------------------------------------------
+
+
+
+ GRADIENTS: core used    3894 words
+
+          ----------------------
+          GRADIENT OF THE ENERGY
+          ----------------------
+
+  I,J,K,L =   1,   1,   1,   1, CYCLE TIME:        .00 TOTAL TIME:        .77
+  I,J,K,L =   2,   2,   2,   2, CYCLE TIME:        .00 TOTAL TIME:        .77
+  I,J,K,L =   3,   3,   3,   3, CYCLE TIME:        .00 TOTAL TIME:        .77
+  I,J,K,L =   5,   5,   5,   5, CYCLE TIME:        .05 TOTAL TIME:        .82
+
+
+     ATOM       1              2              3
+
+
+       E'X   .0000000D+00  -.3261659D-03   .3261659D-03
+       E'Y   .5142233D-31   .1053870D-17  -.6076309D-31
+       E'Z   .8137111D-03  -.4068556D-03  -.4068556D-03
+
+            POSITIONED
+ F.EXT.      AT BLOCK
+ .ED2            3
+ .ED3           21
+ .ED7            5
+
+
+           End of calculation of the energy gradient, IREST =   0
+
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .82 s
+                        Remaining           86399.18 s
+ -------------------------------------------------------------------------------
+
+
+
+                     ***** OPTIMIZATION CONVERGED *****
+
+
+
+     Search  Update  Points     Energy        Gradient norm      alpha
+        3       3       3     -74.96589835      .00109816       1.00000
+
+          Status: END OF SEARCH CYCLES  
+
+          Previous energy     -74.96585177
+
+              Convergence       -.00004658
+
+
+                      Coordinates (Bohr)              Gradient (Hartree/Bohr)
+   Atom       Z       x         y         z             x         y         z
+
+ 1 OXYGEN    8.0   .000000   .000000  -.043413       .000000   .000000   .000814
+ 2 HYDROGEN  1.0 -1.434404   .000000  1.155542      -.000326   .000000  -.000407
+ 3 HYDROGEN  1.0  1.434404   .000000  1.155542       .000326   .000000  -.000407
+
+ Largest component of gradient =      .0008137 ( tolerance =       .0010000 )
+ Previous largest component of gradient =      .0035315
+
+
+ Number of function evaluations =  3
+
+
+
+ H2O, STO-3G                                                                    
+ -------------------------------------------------------------------------------
+
+
+    NUCLEAR ENERGY    =      8.907043468662 a.u. =       242.375002029 ev
+    ELECTRONIC ENERGY =    -83.872941817565 a.u. =     -2282.317866165 ev
+    TOTAL ENERGY      =    -74.965898348903 a.u. =     -2039.942864136 ev
+
+          ----------------
+          ORBITAL ENERGIES
+          ----------------
+                               au                    ev
+
+                     1    -20.251336913624      -551.071502323
+                     2     -1.257400159188       -34.215884003
+                     3      -.594244783800       -16.170357896
+                     4      -.459298280050       -12.498246130
+                     5      -.392495598993       -10.680437559
+
+          ------------------
+          MOLECULAR ORBITALS
+          ------------------
+
+
+                -20.25133691  -1.25740016   -.59424478   -.45929828   -.39249560
+
+
+                      1            2            3            4            5
+
+
+    1  O   s       .99421567    .23377611    .00000000    .10393075    .00000000
+    2  O   s       .02585202   -.84445389    .00000000   -.53768801    .00000000
+    3  O   x       .00000000    .00000000   -.61237145    .00000000    .00000000
+    4  O   y       .00000000    .00000000    .00000000    .00000000   1.00000000
+    5  O   z       .00416043   -.12270204    .00000000    .75649720    .00000000
+    6  H   s      -.00558696   -.15562693    .44912510    .29486434    .00000000
+    7  H   s      -.00558696   -.15562693   -.44912510    .29486434    .00000000
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.86949   1--3  1.86949
+     [ .98929]       [ .98929]
+
+ BOND ANGLES
+
+  2--1--3  100.218447
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+
+          *********************
+          ROTATIONAL PROPERTIES
+          *********************
+
+  MOLECULAR GEOMETRY (ATOMIC UNITS)
+
+       NO.            X               Y               Z            AT.W.
+
+        1           .000000000      .000000000     -.043412721    15.994915000
+        2         -1.434403512      .000000000     1.155542487     1.007825000
+        3          1.434403512      .000000000     1.155542487     1.007825000
+
+  MOLECULAR GEOMETRY (ANGSTROMS)
+
+       NO.            X               Y               Z            AT.W.
+
+        1           .000000000      .000000000     -.022973016    15.994915000
+        2          -.759053434      .000000000      .611486576     1.007825000
+        3           .759053434      .000000000      .611486576     1.007825000
+
+   CENTER OF MASS
+
+         CMX            CMY            CMZ
+
+         .0000000       .0000000       .0480324
+
+
+   CARTESIAN COORDINATES REFERENCED TO CENTER OF MASS
+
+        NO.          X               Y               Z            AT.W.
+
+        1            .0000000       .0000000      -.0710055     15.9949150
+        2           -.7590534       .0000000       .5634541      1.0078250
+        3            .7590534       .0000000       .5634541      1.0078250
+
+   INERTIA TENSOR
+
+             1              2              3
+
+
+    1      .72057246      .00000000      .00000000
+    2      .00000000     1.88191362      .00000000
+    3      .00000000      .00000000     1.16134117
+
+   PRINCIPAL MOMENTS OF INERTIA
+
+ NO.           in AMU.A**2       in g.cm**2        in cm**-1          in MHz
+                                  (10**39)
+
+   1           .72057D+00        .11966D+00        .23395D+02        .70136D+06
+   2           .11613D+01        .19285D+00        .14516D+02        .43517D+06
+   3           .18819D+01        .31250D+00        .89577D+01        .26855D+06
+
+   EIGENVECTORS OF INERTIA TENSOR
+
+
+                1             2             3
+
+
+         1     1.0000000      .0000000      .0000000
+         2      .0000000      .0000000     1.0000000
+         3      .0000000     1.0000000      .0000000
+
+
+ THERMODYNAMIC QUANTITIES
+ Calculated for the output geometry, as an ideal gas (T=    298.15 K)
+
+
+ Translational:
+ - Heat capacity [Cp]         =    20.78603     J/ K mol
+ - Enthalpy [Ho(25)-Ho(0)]    =    6197.355     J/ mol
+ - Entropy [So]               =    144.7991     J/ K mol
+ - Free energy [Go(25)-Ho(0)] =   -36974.49     J/ mol
+
+ Rotational:
+ - Heat capacity [Cp]         =    12.47162     J/ K mol
+ - Enthalpy [Ho(25)-Ho(0)]    =    3718.413     J/ mol
+ - Entropy [So]               =    44.64611     J/ K mol
+ - Free energy [Go(25)-Ho(0)] =   -9592.826     J/ mol
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used               .82 s
+                        Remaining           86399.18 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/12/2010                                         Time :  7:33:55.35
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    21 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ *  5   Overlap Matrix     5    15          1
+ *  6   One Electr. H      6    16          1
+ *  7   Density Matrix     7    17          1
+ *  8   Wave Functions     8    18          1
+ *  9   Eigenvalues        9    19          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 14   Gradients         14    20          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 16   Inv.Hessian       16    21          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .82000000E+00 SECS.
+                                   =          .00023 HOURS
+
+
+
+ -------------------------------------------------------------------------------
+                                    FINISHED
+ -------------------------------------------------------------------------------
+
+
+
+ -------------------------------------------------------------------------------
+ H2O, 6-31G                                                                     
+ -------------------------------------------------------------------------------
+
+
+
+ THE POINT GROUP OF THE MOLECULE IS ...CNV     
+ THE ORDER OF THE PRINCIPAL AXIS IS ...  2
+ THE CONTRACTED PRIMITIVE FUNCTIONS HAVE BEEN UNNORMALIZED
+ THE CONTRACTED BASIS FUNCTIONS ARE NOW NORMALIZED TO UNITY
+
+          ********************
+
+          MOLECULAR BASIS SET
+
+          ********************
+
+
+ ******************************************************************************
+
+  ATOM     NUCLEAR               COORDINATES                 NUMBER OF
+           CHARGE       X             Y              Z       SHELLS
+
+ ******************************************************************************
+
+ OXYGEN      8.0    .0000000       .0000000       .0000000    5
+                                                                 1S  2S  2S  
+                                                                 2P  2P  
+
+ HYDROGEN    1.0  -1.4320539       .0000000      1.2012427    2
+                                                                 1S  1S  
+
+ HYDROGEN    1.0   1.4320539       .0000000      1.2012427    2
+                                                                 1S  1S  
+
+ ******************************************************************************
+
+ CONTRACTED PRIMITIVE FUNCTIONS
+
+ Atom Shell Type   Primitive  Exponents        Contraction coefficients
+
+ OXYGEN  
+
+
+        1    1S       1     5484.671660        .831690  (   .001831 )
+        1    1S       2      825.234946       1.530797  (   .013950 )
+        1    1S       3      188.046958       2.477146  (   .068445 )
+        1    1S       4       52.964500       3.256277  (   .232714 )
+        1    1S       5       16.897570       2.792894  (   .470193 )
+        1    1S       6        5.799635        .954938  (   .358521 )
+
+
+        2    2S       7       15.230378       -.608691  (  -.110778 )
+        2    2S       8        3.528295       -.271595  (  -.148026 )
+        2    2S       9         .993588        .802025  (  1.130767 )
+
+
+        3    2S      10         .259314        .258988  (  1.000000 )
+
+
+        4    2P      11       15.230378       3.039591  (   .070874 )
+        4    2P      12        3.528295       2.341851  (   .339753 )
+        4    2P      13         .993588       1.028199  (   .727159 )
+
+
+        5    2P      14         .259314        .263768  (  1.000000 )
+
+ HYDROGEN
+
+
+        8    1S      15       26.972837        .282543  (   .033495 )
+        8    1S      16        4.068567        .479241  (   .234727 )
+        8    1S      17         .921776        .545599  (   .813757 )
+
+
+        9    1S      18         .213290        .223686  (  1.000000 )
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.86916   1--3  1.86916
+     [ .98912]       [ .98912]
+
+ BOND ANGLES
+
+  2--1--3  100.018468
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+ CONVERGENCE EXPONENT IS BEING SET TO 7 TO RUN "OPTIMIZE" OR "FORCE" OPTIONS
+
+
+
+
+ MAIN FILE ON  <fn>.ED2 STARTING AT BLOCK   1
+ DUMP FILE ON  <fn>.ED3 STARTING AT BLOCK   1
+ SCRATCH FILE ON   .ED7 STARTING AT BLOCK   1
+
+
+
+ START
+
+ TIME LIMIT =  86399.180
+ OUTPUT OPTION =    -1
+ PREFACTOR TOLERANCE FOR INTEGRALS = 1.0D-18
+ INTEGRAL CUTOFF = 1.0D-10
+ OPTION FOR NORMALIZATION OF BASIS FUNCTIONS =     0
+ OPTION FOR UNNORMALIZATION OF PRIMITIVES =     0
+ RESTART OPTION =    -1
+
+ STARTING SHELLS FOR 2E-INTEGRALS =     1    1    1    1
+ RECORD NUMBER =          1
+ LOCATION OF FIRST INTEGRAL IN THIS RECORD =     1
+
+ TOTAL NUMBER OF SHELLS                      =    9
+ TOTAL NUMBER OF BASIS FUNCTIONS             =   13
+ NUMBER OF ELECTRONS                         =   10
+ CHARGE OF MOLECULE                          =    0
+ STATE MULTIPLICITY                          =    1
+ NUMBER OF DOUBLY OCCUPIED ORBITALS          =    5
+ NO OF SINGLY OCCUPIED ORBITALS (ALPHA)      =    0
+ NO OF SINGLY OCCUPIED ORBITALS (BETA)       =    0
+ TOTAL NUMBER OF ATOMS                       =    3
+ SCFTYP = CLOSED  
+ RUNTYP = OPTIMIZE
+  GUESS = HCORE   
+
+
+      **********************************************************************
+                               GEOMETRY OPTIMIZATION
+      **********************************************************************
+
+      Convergence threshold on gradient =  .00100000
+
+                                   -------------------
+  Point  0                         Nuclear coordinates
+                                   -------------------
+
+                  Atom             x                   y                   z
+
+       1  OXYGEN             .0000000000         .0000000000         .0000000000
+       2  HYDROGEN         -1.4320539252         .0000000000        1.2012426844
+       3  HYDROGEN          1.4320539252         .0000000000        1.2012426844
+
+ BOND LENGTHS IN BOHR [ANGSTROM]
+
+ 1--2  1.86916   1--3  1.86916
+     [ .98912]       [ .98912]
+
+ BOND ANGLES
+
+  2--1--3  100.018468
+
+ DIHEDRAL ANGLES
+      NONE
+
+
+
+
+          *** INSUFFICIENT TIME TO CONTINUE ***
+
+          This job can be restarted ...
+
+
+ -------------------------------------------------------------------------------
+                        Last step used           .00 s
+                        Total used          86400.00 s
+                        Remaining               -.82 s
+ -------------------------------------------------------------------------------
+
+
+ Date :  2/13/2010                                         Time :  7:33:55.40
+
+
+
+ *SUMMARY OF DUMPFILE ON <fn>.ED3 AT BLOCK     1
+ *
+ *CURRENT LENGTH =    14 BLOCKS
+ *MAXIMUM LENGTH = 32760 BLOCKS
+ *
+ *       SECTION         TYPE  BLOCK LENGTH/4096 bytes
+ *  1   Symmetry Data 1    1     4          2
+ *  2   System Data 1      2     7          1
+ *  3   Basis Functions    3     9          2
+ *  4   Optns.& Rest. 1    4     2          1
+ * 11   Common HUCKEL     11    12          1
+ * 12   Common ATMWT      12    13          1
+ * 13   SCF Data          13    11          1
+ * 15   Opt.Coord.&Data   15    14          1
+ * 21   Symmetry Data 2   21     6          1
+ * 22   System Data 2     22     8          1
+ * 24   Optns.& Rest. 2   24     3          1
+
+ TOTAL TIME ELAPSED BY THIS SYSTEM =   .86400820E+05 SECS.
+                                   =        24.00023 HOURS
+ *** MICROMOL INTERRUPTED IN SCF ***

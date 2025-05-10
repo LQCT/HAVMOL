@@ -1,0 +1,15 @@
+TITLE
+HCl, mini1
+CONVERGE    7
+PRINT       0
+RUNTYP     OPTIMIZE
+ANGSTROM
+ATOMS
+Chlorine  17.0   -0.02321   0.00000   0.00000
+mini1
+Hydrogen  1.0    1.29778   0.00000   0.00000
+mini1
+END
+START
+continue
+

@@ -1,0 +1,6 @@
+      INTEGER*2 NBF1, NSH1, NATM1, NPRM1, NATM13
+      PARAMETER (NBF1=100, NSH1=60, NATM1=24, NPRM1=200,
+     &           NATM13=NATM1*3,
+     &           MAXDIM=NBF1*(NBF1+1)+NBF1,
+     &           MDM1=MAXDIM-1,NBF1M=(NBF1*(NBF1+1))/2)
+
